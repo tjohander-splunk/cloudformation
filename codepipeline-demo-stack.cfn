@@ -1,0 +1,86 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+  This stack will build a CodePipeline CI/CD Workflow to watch build and deploy a Java application.
+  The source version control system in this case is Github, although CodeCommit, BitBucket or Github Enterprise Server
+  could be used.  The pipeline will execute the Maven build script and pass output artifacts to CodeDeploy.  CodeDeploy
+  will take over and install the artifact to the Application server, which is configured to run the built .jar file as a
+  Systemd service.
+
+Metadata:
+  template metadata
+
+Parameters:
+  set of parameters
+
+Rules:
+  set of rules
+
+Mappings:
+  set of mappings
+
+Conditions:
+  set of conditions
+
+Transform:
+  set of transforms
+
+Resources:
+  MyCodeStarConnection:
+    Type: AWS::CodeStarConnections::Connection
+    Properties:
+      ConnectionName: MyVersionControlConnection
+      HostArn: arn:aws:codestar-connections:us-east-2:455790677231:connection/8b9699b2-520f-41a8-89fc-97ccafe71c5c
+      ProviderType: GitHub
+      Tags:
+        - Tag
+  MyPipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        ArtifactStore
+      ArtifactStores:
+        - ArtifactStoreMap
+      DisableInboundStageTransitions:
+        - StageTransition
+      Name: String
+      RestartExecutionOnUpdate: Boolean
+      RoleArn: String
+      Stages:
+        - StageDeclaration
+      Tags:
+        - Tag
+  MyAppServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: !Ref KeyName
+      SecurityGroups:
+        - !Ref logical name of AWS::EC2::SecurityGroup resource
+      UserData:
+        Fn::Base64: !Sub |
+          cat << EOF >> /etc/systemd/system/my-app.service
+          [Unit]
+          Description=This is what my service does
+
+          [Service]
+          ExecStart= /usr/bin/java -jar /home/ec2-user/app/app.jar
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+      InstanceType: m1.small
+      AvailabilityZone: us-east-1a
+      ImageId: ami-0ff8a91507f77f867
+      Volumes:
+        - VolumeId: !Ref logical name of AWS::EC2::Volume resource
+          Device: /dev/sdk
+      Tags:
+        - Key: Name
+          Value: MyTag
+
+Outputs:
+  set of outputs
+
+
+
