@@ -9,22 +9,30 @@ Description:
   Systemd service.
 
 Metadata:
-  template metadata
 
 Parameters:
-  set of parameters
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - m1.small
+      - m1.large
+    Description: Enter t2.micro, m1.small, or m1.large. Default is t2.micro.
+  GitHubConnectionArn:
+    Type: String
+    Description: The ARN of an existing, active AWS CodeStar Connection to a Github Account
+  KeyName:
+    Type: String
+    Description: The name of the AWS KeyPair that can connect to the app server
 
 Rules:
-  set of rules
 
 Mappings:
-  set of mappings
 
 Conditions:
-  set of conditions
 
 Transform:
-  set of transforms
 
 Resources:
   MyCodeStarConnection:
@@ -54,7 +62,8 @@ Resources:
   MyAppServer:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: !Ref KeyName
+      KeyName:
+        Ref: KeyName
       SecurityGroups:
         - !Ref logical name of AWS::EC2::SecurityGroup resource
       UserData:
@@ -69,18 +78,27 @@ Resources:
           [Install]
           WantedBy=multi-user.target
           EOF
-      InstanceType: m1.small
-      AvailabilityZone: us-east-1a
+      InstanceType: t2.small
+      AvailabilityZone: us-east-2a
       ImageId: ami-0ff8a91507f77f867
       Volumes:
         - VolumeId: !Ref logical name of AWS::EC2::Volume resource
           Device: /dev/sdk
       Tags:
         - Key: Name
-          Value: MyTag
+          Value: AppServer
+        - Key: application
+          Value: Spring Pet Clinic
+  MySNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: "add valid email address"
+          Protocol: email
 
 Outputs:
-  set of outputs
+  InstanceId:
+
 
 
 
