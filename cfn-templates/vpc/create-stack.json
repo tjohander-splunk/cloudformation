@@ -1,0 +1,14 @@
+{
+  "StackName": "tsj-cfn-test-vpc-stack",
+  "TemplateURL": "https://tsj-splunk-my-bucket.s3.amazonaws.com/aws-vpc.template.yaml",
+  "OnFailure": "DELETE",
+  "Parameters": [
+    {
+      "ParameterKey": "AvailabilityZones",
+      "ParameterValue": [
+        "us-east-1a",
+        "us-east-1b"
+      ]
+    }
+  ]
+}
