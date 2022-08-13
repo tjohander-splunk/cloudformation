@@ -4,11 +4,12 @@
   "OnFailure": "DELETE",
   "Parameters": [
     {
+      "ParameterKey": "NumberOfAZs",
+      "ParameterValue": "2"
+    },
+    {
       "ParameterKey": "AvailabilityZones",
-      "ParameterValue": [
-        "us-east-1a",
-        "us-east-1b"
-      ]
+      "ParameterValue": "us-east-1a, us-east-1b"
     }
   ]
 }
